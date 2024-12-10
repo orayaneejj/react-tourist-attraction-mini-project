@@ -20,10 +20,13 @@ function LandingPage() {
     getPostList();
   }, [searchText]);
 
+  const handleTagClick = (tag) => {
+    setSearchText((prevTag) => (prevTag ? `${prevTag} ${tag}` : tag));
+  };
   return (
     <div className="flex flex-col items-center">
       <Header searchText={searchText} setSearchText={setSearchText} />
-      <MainContent postList={postList} />
+      <MainContent postList={postList} onTagClick={handleTagClick} />
     </div>
   );
 }
@@ -47,9 +50,9 @@ function Header({ searchText, setSearchText }) {
   );
 }
 
-function MainContent({ postList }) {
+function MainContent({ postList, onTagClick }) {
   return (
-    <main className="flex-col">
+    <main className="flex-col pb-10">
       {postList.map((post) => (
         <LocationCard
           key={post.id}
@@ -58,6 +61,7 @@ function MainContent({ postList }) {
           description={truncateText(post.description)}
           url={post.url}
           tags={post.tags}
+          onTagClick={onTagClick}
         />
       ))}
     </main>
